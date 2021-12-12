@@ -7,6 +7,7 @@ fn main() {
     let stream = Arc::new(stream);
     let handle = Arc::clone(&stream);
     ctrlc::set_handler(move || {
+        println!("Ctrl-C was received...");
         let _ = handle.shutdown(Shutdown::Read);
     }).unwrap();
     loop {
