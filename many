@@ -1,0 +1,6 @@
+#!/bin/sh
+
+for i in {1..5}; do
+    echo "Session Number $i"
+    nc -l -p 5555 </dev/random
+done
