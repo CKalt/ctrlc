@@ -1,0 +1,2 @@
+#!/bin/sh
+cargo run --release -- "${@:1}" 2>&1 | tee -i run.log
