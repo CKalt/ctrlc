@@ -4,17 +4,17 @@ use std::ops::DerefMut;
 use std::io::prelude::*;
 
 type OptStream = Option<TcpStream>;
-pub type Connection = Arc<RwLock<OptStream>>;
+pub type SharedConnection = Arc<RwLock<OptStream>>;
 
-pub trait ConnectionTrait {
-    fn create_new() -> Connection;
+pub trait Connection {
+    fn new() -> Self;
     fn connect(&self, url: &str);
     fn shutdown(&self);
     fn read_exact(&self, buf: &mut[u8]) -> bool;
 }
 
-impl ConnectionTrait for Connection {
-    fn create_new() -> Connection {
+impl Connection for SharedConnection {
+    fn new() -> Self {
         Arc::new(RwLock::new(None))
     }
     fn connect(&self, url: &str) {

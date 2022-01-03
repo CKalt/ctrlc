@@ -5,7 +5,7 @@ use std::{thread, time};
 use mtcp::*;
 
 fn main() {
-    let mt_stream: Connection = Connection::create_new();
+    let mt_stream: SharedConnection = mtcp::Connection::new();
     let handle = mt_stream.clone();
 
     ctrlc::set_handler(move || {
