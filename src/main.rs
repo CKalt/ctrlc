@@ -1,8 +1,7 @@
 mod mtcp;
 
-use std::ops::DerefMut;
 use std::{thread, time};
-use mtcp::*;
+use mtcp::{SharedConnection, Connection};
 
 fn main() {
     let mt_stream: SharedConnection = mtcp::Connection::new();
@@ -24,11 +23,16 @@ fn main() {
             println!("Seesion Number {}, got some bytes", session_num);
         }
 
+        /*
         {
             let mut safe_stream_rwlock = mt_stream.write().unwrap();
             let safe_stream = safe_stream_rwlock.deref_mut();
             *safe_stream = None; // disconnect
         }
+        */
+
+        mt_stream.disconnect();
+
         thread::sleep(time::Duration::from_secs(1));
 
         if session_num >= 5 {

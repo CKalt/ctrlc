@@ -9,6 +9,7 @@ pub type SharedConnection = Arc<RwLock<OptStream>>;
 pub trait Connection {
     fn new() -> Self;
     fn connect(&self, url: &str);
+    fn disconnect(&self);
     fn shutdown(&self);
     fn read_exact(&self, buf: &mut[u8]) -> bool;
 }
@@ -26,6 +27,11 @@ impl Connection for SharedConnection {
         } else {
             panic!("expected disconnected stream");
         }
+    }
+    fn disconnect(&self) {
+        let mut safe_stream_rwlock = self.write().unwrap();
+        let safe_stream = safe_stream_rwlock.deref_mut();
+        *safe_stream = None; // disconnect
     }
     fn shutdown(&self) {
         let safe_stream = self.read().unwrap();
